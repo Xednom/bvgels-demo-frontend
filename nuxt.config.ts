@@ -73,13 +73,11 @@ export default defineNuxtConfig({
   css: ['primeicons/primeicons.css', 'primeflex/primeflex.scss', 'primevue/resources/themes/lara-light-indigo/theme.css', '@/assets/styles.scss'],
 
   auth: {
-    isEnabled: true,
-    disableServerSideAuth: false,
-    baseURL: "http://127.0.0.1:8000",
+    baseURL: process.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/",
     provider: {
       type: 'refresh',
       endpoints: {
-        signIn: { path: '/api/auth/jwt/create', method: 'post' },
+        signIn: { path: 'api/auth/jwt/create', method: 'post' },
         signOut: false,
         signUp: { path: 'api/auth/users', method: 'post' },
         getSession: { path: 'api/auth/users/me', method: 'get' },
@@ -96,7 +94,7 @@ export default defineNuxtConfig({
       },
       // refreshToken: { signInResponseRefreshTokenPointer: '/refresh', refreshRequestTokenPointer: 'auth.refresh', maxAgeInSeconds: 28800, },
       refreshToken: {
-        signInResponseRefreshTokenPointer: '/refresh-token',
+        signInResponseRefreshTokenPointer: '/refresh',
         refreshRequestTokenPointer: 'Bearer',
         cookieName: 'auth.token',
         maxAgeInSeconds: 1800,
