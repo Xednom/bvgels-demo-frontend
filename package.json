@@ -27,7 +27,7 @@
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.18.9",
-        "@sidebase/nuxt-auth": "^0.6.3",
+        "@sidebase/nuxt-auth": "^0.8.1",
         "eslint": "^8.30.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-nuxt": "^4.0.0",

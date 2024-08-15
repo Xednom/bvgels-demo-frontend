@@ -3,6 +3,7 @@ import pkg from './package.json';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: false,
+
   runtimeConfig: {
     public: {
       APP_VERSION: pkg.version,
@@ -10,9 +11,11 @@ export default defineNuxtConfig({
       APP_MODE: process.env?.NODE_ENV
     }
   },
+
   experimental: {
     renderJsonPayloads: false
   },
+
   vite: {
     vue: {
       script: {
@@ -22,6 +25,7 @@ export default defineNuxtConfig({
     }
 
   },
+
   app: {
     head: {
       title: 'Bvgels Demo',
@@ -35,16 +39,20 @@ export default defineNuxtConfig({
       ]
     }
   },
+
   modules: ['nuxt-primevue', '@sidebase/nuxt-auth', '@pinia/nuxt',],
+
   primevue: {
     options: { ripple: true },
     components: {
       exclude: ['Editor']
     }
   },
+
   build: {
     transpile: ['@vuepic/vue-datepicker']
   },
+
   script: [
     {
       strategy: 'lazyOnload',
@@ -61,9 +69,13 @@ export default defineNuxtConfig({
             `
     }
   ],
+
   css: ['primeicons/primeicons.css', 'primeflex/primeflex.scss', 'primevue/resources/themes/lara-light-indigo/theme.css', '@/assets/styles.scss'],
+
   auth: {
-    baseURL: process.env.BASE_URL || 'http://127.0.0.1:8000/',
+    isEnabled: true,
+    disableServerSideAuth: false,
+    baseURL: "http://127.0.0.1:8000",
     provider: {
       type: 'refresh',
       endpoints: {
@@ -82,11 +94,17 @@ export default defineNuxtConfig({
         maxAgeInSeconds: 60 * 5, // 5 min
         sameSiteAttribute: 'strict'
       },
+      // refreshToken: { signInResponseRefreshTokenPointer: '/refresh', refreshRequestTokenPointer: 'auth.refresh', maxAgeInSeconds: 28800, },
       refreshToken: {
-        signInResponseRefreshTokenPointer: '/refresh',
-        type: "Bearer",
+        signInResponseRefreshTokenPointer: '/refresh-token',
+        refreshRequestTokenPointer: 'Bearer',
+        cookieName: 'auth.token',
+        maxAgeInSeconds: 1800,
       }
     },
     globalAppMiddleware: true
-  }
+  },
+
+  compatibilityDate: '2024-08-14',
 });
+console.warn("process.env.VITE_API_BASE_URL: ", process.env.VITE_API_BASE_URL)
