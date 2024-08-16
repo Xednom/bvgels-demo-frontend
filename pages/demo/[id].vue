@@ -19,11 +19,12 @@ computed(() => {
         create.value = false;
     }
 });
-
 </script>
 
 <template>
-    <FormPage :id="id" :create="create"/>
+    <div v-if="id">
+        <FormPage :id="id" :create="create" />
+    </div>
 </template>
 
 <style></style>
