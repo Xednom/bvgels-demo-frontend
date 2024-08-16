@@ -95,7 +95,7 @@ export default defineNuxtConfig({
       // refreshToken: { signInResponseRefreshTokenPointer: '/refresh', refreshRequestTokenPointer: 'auth.refresh', maxAgeInSeconds: 28800, },
       refreshToken: {
         signInResponseRefreshTokenPointer: '/refresh',
-        refreshRequestTokenPointer: 'Bearer',
+        type: 'Bearer',
         cookieName: 'auth.token',
         maxAgeInSeconds: 1800,
       }
