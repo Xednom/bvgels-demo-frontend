@@ -4,9 +4,9 @@ import { useApiCrud } from '../../vue-bvgels/composables/useApiCrud';
 import { useRestStore } from '../../vue-bvgels/stores/restModule';
 import ProgressSpinner from 'primevue/progressspinner';
 import { useToast } from 'primevue/usetoast';
-import { useListPage } from '../../../vue-bvgels/composables/useListPage';
+import { useListPage } from '@/vue-bvgels/composables/useListPage';
 
-import BInputText from '../../../vue-bvgels/components/uikit/fields/BInputText.vue';
+import BInputText from '@/vue-bvgels/components/uikit/fields/BInputText.vue';
 // import BTextArea from '../../../vue-bvgels/components/uikit/fields/BTextArea.vue';
 import BTextArea from '@/vue-bvgels/components/uikit/fields/BTextArea.vue';
 import VCalendar from '@/vue-bvgels/components/uikit/fields/VCalendar.vue';

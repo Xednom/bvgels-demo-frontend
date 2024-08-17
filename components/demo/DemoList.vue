@@ -4,7 +4,7 @@ import { FilterMatchMode, FilterOperator } from 'primevue/api';
 import Dropdown from 'primevue/dropdown';
 import { useApiCrud } from '../../../composables/useApiCrud';
 import { CustomerService } from '@/service/CustomerService';
-import { useListPage } from '../../../vue-bvgels/composables/useListPage';
+import { useListPage } from '@/vue-bvgels/composables/useListPage';
 
 const { items, loading, count } = useListPage('demo');
 // const { items, error, loading, totalCount, getItems } = useApiCrud('reservation');
