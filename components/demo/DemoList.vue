@@ -103,7 +103,7 @@ onMounted(async () => {
                                 <Calendar v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" showIcon iconDisplay="input" />
                             </template>
                         </Column>
-                        <Column field="datetime_field" header="Check out date" filterMatchMode="contains" sortable>
+                        <Column field="datetime_field" header="Date Time Field" filterMatchMode="contains" sortable>
                             <template #filter="{ filterModel, filterCallback }">
                                 <!-- <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" placeholder="Search" /> -->
                                 <Calendar v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" showIcon iconDisplay="input" />
