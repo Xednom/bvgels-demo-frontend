@@ -105,4 +105,3 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2024-08-14',
 });
-console.warn("process.env.VITE_API_BASE_URL: ", process.env.VITE_API_BASE_URL)
