@@ -64,7 +64,6 @@ watch(
 watch(
     serverError,
     (newVal) => {
-        console.info('Updated serverError: ', newVal);
         responseError.value = newVal;
     },
     { immediate: true }
