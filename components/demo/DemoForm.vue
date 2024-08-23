@@ -21,10 +21,10 @@ const toast = useToast();
 const store = useRestStore();
 const { items, optionSampleLoading, count } = useListPage('sample-foreign-key');
 
-const { save, serverError } = useApiCrud('demo', store);
+const { save, fetchItem, item, serverError } = useApiCrud('demo', store);
 const props = defineProps({
     id: {
-        type: String,
+        type: [String, Number],
         required: true
     },
     create: {
@@ -34,7 +34,6 @@ const props = defineProps({
 });
 
 const model = defineModel();
-const item = ref({ data: {} });
 const loading = ref(false);
 const responseError = ref<object>({});
 const formatDate = (date) => {
@@ -76,8 +75,7 @@ onMounted(() => {
     if (!props.create) {
         nextTick(async () => {
             store.loading = false;
-            const response = await store.fetchItem(props.id);
-            item.value = toRaw(response.data.value);
+            fetchItem(props.id);
             loading.value = store.loading;
         });
     }
