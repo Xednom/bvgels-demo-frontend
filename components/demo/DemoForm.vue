@@ -6,8 +6,7 @@ import ProgressSpinner from 'primevue/progressspinner';
 import { useToast } from 'primevue/usetoast';
 import { useListPage } from '../../../vue-bvgels/composables/useListPage';
 
-import BInputText from '../../../vue-bvgels/components/uikit/fields/BInputText.vue';
-// import BTextArea from '../../../vue-bvgels/components/uikit/fields/BTextArea.vue';
+import BInputText from '@/vue-bvgels/components/uikit/fields/BInputText.vue';
 import BTextArea from '@/vue-bvgels/components/uikit/fields/BTextArea.vue';
 import VCalendar from '@/vue-bvgels/components/uikit/fields/VCalendar.vue';
 import BDateTime from '@/vue-bvgels/components/uikit/fields/BDateTime.vue';
@@ -22,7 +21,7 @@ const toast = useToast();
 const store = useRestStore();
 const { items, optionSampleLoading, count } = useListPage('sample-foreign-key');
 
-const { save, serverError } = useApiCrud<Object>('demo', store);
+const { save, serverError } = useApiCrud('demo', store);
 const props = defineProps({
     id: {
         type: String,
@@ -37,6 +36,7 @@ const props = defineProps({
 const model = defineModel();
 const item = ref({ data: {} });
 const loading = ref(false);
+const responseError = ref<object>({});
 const formatDate = (date) => {
     return moment(date).format('YYYY-MM-DD');
 };
@@ -61,9 +61,19 @@ watch(
     { immediate: true }
 );
 
+watch(
+    serverError,
+    (newVal) => {
+        console.info('Updated serverError: ', newVal);
+        responseError.value = newVal;
+    },
+    { immediate: true }
+);
+
 onMounted(() => {
     store.setModelName('demo');
     optionSampleItems.value = items.value;
+
     if (!props.create) {
         nextTick(async () => {
             store.loading = false;
@@ -100,33 +110,32 @@ const mode = computed(() => {
                     </div>
                 </template>
                 <template #content v-else>
-                    <!-- <div v-for="(data, index) in model" :key="index"> -->
                     <div class="col-12">
                         <div class="card">
                             <div class="p-fluid formgrid grid">
                                 <div class="field col-12 md:col-3">
-                                    <BInputText v-model="item.char_field" type="text" :model-value="item.char_field" :server-error="serverError" label="Char Field" field="char_field" />
+                                    <BInputText v-model="item.char_field" type="text" :model-value="item.char_field" :server-error="responseError" label="Char Field" field="char_field" />
                                 </div>
                                 <div class="field col-12 md:col-3">
-                                    <BBoolean v-model="item.boolean_field" :server-error="serverError" label="Boolean Field" field="boolean_field" />
+                                    <BBoolean v-model="item.boolean_field" :server-error="responseError" label="Boolean Field" field="boolean_field" />
                                 </div>
                                 <div class="field col-12 md:col-3">
-                                    <BInputText v-model="item.email_field" type="text" :model-value="item.email_field" :server-error="serverError" label="Email Field" field="email_field" />
+                                    <BInputText v-model="item.email_field" type="text" :model-value="item.email_field" :server-error="responseError" label="Email Field" field="email_field" />
                                 </div>
                                 <div class="field col-12 md:col-3">
-                                    <BInputText v-model="item.integer_field" type="text" :model-value="item.integer_field" :server-error="serverError" label="Integer Field" field="integer_field" />
+                                    <BInputText v-model="item.integer_field" type="text" :model-value="item.integer_field" :server-error="responseError" label="Integer Field" field="integer_field" />
                                 </div>
                             </div>
                             <div class="p-fluid formgrid grid">
                                 <div class="field col-12 md:col-3">
-                                    <BInputText v-model="item.decimal_field" type="text" :model-value="item.decimal_field" :server-error="serverError" label="Decimal Field" field="decimal_field" />
+                                    <BInputText v-model="item.decimal_field" type="text" :model-value="item.decimal_field" :server-error="responseError" label="Decimal Field" field="decimal_field" />
                                 </div>
                                 <div class="field col-12 md:col-3">
-                                    <BDateTime v-model="item.date_field" :server-error="serverError" label="Date Field" field="date_field"> </BDateTime>
+                                    <BDateTime v-model="item.date_field" :server-error="responseError" label="Date Field" field="date_field"> </BDateTime>
                                 </div>
                                 <div class="field col-12 md:col-3">
                                     <div>
-                                        <BDateTime v-model="item.datetime_field" :server-error="serverError" label="Date Time Field" field="date_time_field" showTime> </BDateTime>
+                                        <BDateTime v-model="item.datetime_field" :server-error="responseError" label="Date Time Field" field="date_time_field" showTime> </BDateTime>
                                     </div>
                                 </div>
                                 <div class="field col-12 md:col-3">
@@ -136,7 +145,7 @@ const mode = computed(() => {
                                             :model-value="item.foreign_key_field"
                                             :options="optionSampleItems.value"
                                             optionLabel="name"
-                                            :server-error="serverError"
+                                            :server-error="responseError"
                                             label="Foreign Key Field"
                                             field="foreign_key_field"
                                             :filter="true"
@@ -147,7 +156,7 @@ const mode = computed(() => {
                             </div>
                             <div class="p-fluid formgrid grid">
                                 <div class="field col-12">
-                                    <BTextArea v-model="item.text_field" :model-value="item.text_field" :server-error="serverError" label="Text Field" field="text_field" />
+                                    <BTextArea v-model="item.text_field" :model-value="item.text_field" :server-error="responseError" label="Text Field" field="text_field" />
                                 </div>
                             </div>
                         </div>
