@@ -1,4 +1,5 @@
 import pkg from './package.json';
+import Aura from '@primevue/themes/aura';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -40,10 +41,14 @@ export default defineNuxtConfig({
     }
   },
 
-  modules: ['nuxt-primevue', '@sidebase/nuxt-auth', '@pinia/nuxt',],
+  modules: ['nuxt-primevue', '@primevue/nuxt-module', '@sidebase/nuxt-auth', '@pinia/nuxt', '@nuxtjs/tailwindcss'],
 
   primevue: {
-    options: { ripple: true },
+    options: {
+      ripple: true, theme: {
+        preset: Aura
+      }
+    },
     components: {
       exclude: ['Editor']
     }

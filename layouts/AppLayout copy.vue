@@ -1,14 +1,12 @@
 <script setup>
-import { computed, watch, ref } from 'vue';
-import { usePrimeVue } from 'primevue/config';
-import AppTopbar from './AppTopbar.vue';
+import { useLayout } from '@/layout/composables/layout';
+import { computed, ref, watch } from 'vue';
 import AppFooter from './AppFooter.vue';
 import AppSidebar from './AppSidebar.vue';
-import AppConfig from './AppConfigurator.vue';
-import { useLayout } from './composables/layout';
+import AppTopbar from './AppTopbar.vue';
 
-const $primevue = usePrimeVue();
-const { layoutConfig, layoutState, isSidebarActive } = useLayout();
+const { layoutConfig, layoutState, isSidebarActive, resetMenu } = useLayout();
+
 const outsideClickListener = ref(null);
 
 watch(isSidebarActive, (newVal) => {
@@ -18,47 +16,41 @@ watch(isSidebarActive, (newVal) => {
         unbindOutsideClickListener();
     }
 });
+
 const containerClass = computed(() => {
     return {
-        'layout-theme-light': layoutConfig.darkTheme.value === 'light',
-        'layout-theme-dark': layoutConfig.darkTheme.value === 'dark',
-        'layout-overlay': layoutConfig.menuMode.value === 'overlay',
-        'layout-static': layoutConfig.menuMode.value === 'static',
-        'layout-static-inactive': layoutState.staticMenuDesktopInactive.value && layoutConfig.menuMode.value === 'static',
-        'layout-overlay-active': layoutState.overlayMenuActive.value,
-        'layout-mobile-active': layoutState.staticMenuMobileActive.value,
-        'p-input-filled': $primevue.config.inputStyle === 'filled',
-        'p-ripple-disabled': $primevue.config.ripple === false
+        'layout-overlay': layoutConfig.menuMode === 'overlay',
+        'layout-static': layoutConfig.menuMode === 'static',
+        'layout-static-inactive': layoutState.staticMenuDesktopInactive && layoutConfig.menuMode === 'static',
+        'layout-overlay-active': layoutState.overlayMenuActive,
+        'layout-mobile-active': layoutState.staticMenuMobileActive
     };
 });
 
-const bindOutsideClickListener = () => {
+function bindOutsideClickListener() {
     if (!outsideClickListener.value) {
         outsideClickListener.value = (event) => {
             if (isOutsideClicked(event)) {
-                layoutState.overlayMenuActive.value = false;
-                layoutState.staticMenuMobileActive.value = false;
-                layoutState.menuHoverActive.value = false;
+                resetMenu();
             }
         };
-
         document.addEventListener('click', outsideClickListener.value);
     }
-};
+}
 
-const unbindOutsideClickListener = () => {
+function unbindOutsideClickListener() {
     if (outsideClickListener.value) {
         document.removeEventListener('click', outsideClickListener);
         outsideClickListener.value = null;
     }
-};
+}
 
-const isOutsideClicked = (event) => {
+function isOutsideClicked(event) {
     const sidebarEl = document.querySelector('.layout-sidebar');
     const topbarEl = document.querySelector('.layout-menu-button');
 
     return !(sidebarEl.isSameNode(event.target) || sidebarEl.contains(event.target) || topbarEl.isSameNode(event.target) || topbarEl.contains(event.target));
-};
+}
 </script>
 
 <template>
@@ -71,10 +63,7 @@ const isOutsideClicked = (event) => {
             </div>
             <app-footer></app-footer>
         </div>
-        <app-config></app-config>
         <div class="layout-mask animate-fadein"></div>
     </div>
     <Toast />
 </template>
-
-<style lang="scss" scoped></style>

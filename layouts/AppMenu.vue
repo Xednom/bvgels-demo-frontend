@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import AppMenuItem from './AppMenuItem.vue'
 
-import { useNavigationMenu } from './../composables/navigation'
+import { useNavigationMenu } from '../composables/navigation'
 
 const { navigationMenu } = useNavigationMenu()
 const model = navigationMenu()
