@@ -1,25 +1,22 @@
 <script lang="ts" setup>
-import { ref, onMounted, reactive } from 'vue';
+import { ref, onMounted, reactive, watch } from 'vue';
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
 import Dropdown from 'primevue/dropdown';
-import { useApiCrud } from '../../../composables/useApiCrud';
-import { CustomerService } from '@/service/CustomerService';
-import { useListPage } from '../../../vue-bvgels/composables/useListPage';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import { useApiCrud } from '../../../vue-bvgels/composables/useApiCrud';
+import { useRestStore } from '../../../vue-bvgels/stores/restModule';
+// import { usePaginatedFetch } from '../../../vue-bvgels/composables/usePaginatedFetch';
+import { usePaginatedFetch } from '@/vue-bvgels/composables/usePaginatedFetch';
 
-const { items, loading, count } = useListPage('demo');
-// const { items, error, loading, totalCount, getItems } = useApiCrud('reservation');
-const transformedData = ref([{ results: [] }]);
+import { useToast } from 'primevue/usetoast';
+
+const store = useRestStore();
+const { transformedData, first, rows, totalRecords, fetchItems, onPageChange } = usePaginatedFetch('demo');
+// const transformedData = ref([{ results: [] }]);
 const dt = ref();
-// const loading = ref(false);
-const totalRecords = ref(0);
-const customers = ref();
-const selectedDemo = ref();
-const selectAll = ref(false);
-const first = ref(0);
 const filters = ref({
     char_field: { value: '', matchMode: 'contains' },
-    boolean_field: { value: '', matchMode: 'contains' },
-    room_type__name: { value: '', matchMode: 'contains' },
     date_field: { value: '', matchMode: 'contains' },
     datetime_field: { value: '', matchMode: 'contains' },
     status__name: { value: '', matchMode: 'contains' }
@@ -34,23 +31,11 @@ const columns = ref([
     { field: 'email_field', header: 'Email Field' }
 ]);
 
-const onRowSelect = () => {
-    selectAll.value = selectedDemo.value.length === totalRecords.value;
-};
-const onRowUnselect = () => {
-    selectAll.value = false;
-};
-
 const rowsPerPageItems = [5, 10, 50, 100];
 
 const exportCSV = () => {
     dt.value.exportCSV();
 };
-
-onMounted(async () => {
-    totalRecords.value = count.value;
-    transformedData.value = items.value;
-});
 </script>
 
 <template>
@@ -71,9 +56,8 @@ onMounted(async () => {
                         </template>
                     </Toolbar>
                     <DataTable
-                        :value="transformedData.value"
+                        :value="transformedData"
                         lazy
-                        paginator
                         :first="first"
                         :rows="10"
                         :rowsPerPageOptions="rowsPerPageItems"
@@ -82,14 +66,12 @@ onMounted(async () => {
                         dataKey="id"
                         :totalRecords="totalRecords.value"
                         filterDisplay="row"
-                        :globalFilterFields="['guest', 'room_type', 'date_field', 'datetime_field']"
-                        v-model:selection="selectedDemo"
+                        :globalFilterFields="['char_field', 'date_field', 'date_time_field', 'boolean_field']"
                         tableStyle="min-width: 75rem"
                         sortMode="multiple"
                     >
-                        <!-- <Column v-for="col of columns" :field="col.field" :header="col.header" :key="col.field"></Column> -->
-                        <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-                        <Column field="char_field" header="First name" filterMatchMode="startsWith" sortable>
+                        <Column headerStyle="width: 3rem"></Column>
+                        <Column field="char_field" header="Char Field" filterMatchMode="startsWith" sortable>
                             <template #filter="{ filterModel, filterCallback }">
                                 <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" placeholder="Search" />
                             </template>
@@ -99,23 +81,30 @@ onMounted(async () => {
                         </Column>
                         <Column field="date_field" header="Date Field" filterMatchMode="contains" sortable>
                             <template #filter="{ filterModel, filterCallback }">
-                                <!-- <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" placeholder="Search" /> -->
                                 <Calendar v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" showIcon iconDisplay="input" />
                             </template>
                         </Column>
                         <Column field="datetime_field" header="Date Time Field" filterMatchMode="contains" sortable>
                             <template #filter="{ filterModel, filterCallback }">
-                                <!-- <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" placeholder="Search" /> -->
                                 <Calendar v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" showIcon iconDisplay="input" />
                             </template>
                         </Column>
-                        <Column field="boolean_field" header="Status" filterMatchMode="contains" sortable>
+                        <Column field="boolean_field" header="Boolean Field" filterMatchMode="contains" sortable>
                             <template #body="{ data }">
                                 <Tag v-if="data.boolean_field" severity="success">Active </Tag>
                                 <Tag v-else="data.boolean_field" severity="warning">Inactive</Tag>
                             </template>
                         </Column>
+                        <!-- <Column v-for="(col, index) in columns" :key="index" :field="col.field" :header="col.header" :sortable="col.sortable || false"> </Column> -->
                     </DataTable>
+                    <Paginator
+                        v-model:first="first"
+                        :rows="rows"
+                        :totalRecords="totalRecords"
+                        :rowsPerPageOptions="[10, 20, 50]"
+                        :currentPageReportTemplate="`Showing ${first + 1} to ${Math.min(first + rows, totalRecords)} of ${totalRecords} entries`"
+                        @page="onPageChange"
+                    />
                 </div>
             </div>
         </div>
