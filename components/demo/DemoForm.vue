@@ -108,16 +108,16 @@ const mode = computed(() => {
                         <div class="card">
                             <div class="p-fluid formgrid grid">
                                 <div class="field col-12 md:col-3">
-                                    <BInputText v-model="item.char_field" type="text" :model-value="item.char_field" :server-error="responseError" label="Char Field" field="char_field" />
+                                    <BInputText v-model="item.char_field" type="text" :model-value="item.char_field" :server-error="responseError" label="Text Field" field="char_field" />
                                 </div>
                                 <div class="field col-12 md:col-3">
-                                    <BBoolean v-model="item.boolean_field" :server-error="responseError" label="Boolean Field" field="boolean_field" />
+                                    <BBoolean v-model="item.boolean_field" :server-error="responseError" label="Status Field" field="boolean_field" />
                                 </div>
                                 <div class="field col-12 md:col-3">
                                     <BInputText v-model="item.email_field" type="text" :model-value="item.email_field" :server-error="responseError" label="Email Field" field="email_field" />
                                 </div>
                                 <div class="field col-12 md:col-3">
-                                    <BInputText v-model="item.integer_field" type="text" :model-value="item.integer_field" :server-error="responseError" label="Integer Field" field="integer_field" />
+                                    <BInputText v-model="item.integer_field" type="text" :model-value="item.integer_field" :server-error="responseError" label="Number Field" field="integer_field" />
                                 </div>
                             </div>
                             <div class="p-fluid formgrid grid">
@@ -140,7 +140,7 @@ const mode = computed(() => {
                                             :options="optionSampleForeignKeyItems"
                                             optionLabel="name"
                                             :server-error="responseError"
-                                            label="Foreign Key Field"
+                                            label="Select Field"
                                             field="foreign_key_field"
                                             :filter="true"
                                         >
@@ -150,7 +150,7 @@ const mode = computed(() => {
                             </div>
                             <div class="p-fluid formgrid grid">
                                 <div class="field col-12">
-                                    <BTextArea v-model="item.text_field" :model-value="item.text_field" :server-error="responseError" label="Text Field" field="text_field" />
+                                    <BTextArea v-model="item.text_field" :model-value="item.text_field" :server-error="responseError" label="Big Text Field" field="text_field" />
                                 </div>
                             </div>
                         </div>

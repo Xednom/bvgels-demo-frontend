@@ -67,7 +67,7 @@ const exportCSV = () => {
                         sortMode="multiple"
                     >
                         <Column headerStyle="width: 3rem"></Column>
-                        <Column field="char_field" header="Char Field" filterMatchMode="startsWith" sortable>
+                        <Column field="char_field" header="Text Field" filterMatchMode="startsWith" sortable>
                             <template #filter="{ filterModel, filterCallback }">
                                 <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" placeholder="Search" />
                             </template>
@@ -85,7 +85,7 @@ const exportCSV = () => {
                                 <Calendar v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" showIcon iconDisplay="input" />
                             </template>
                         </Column>
-                        <Column field="boolean_field" header="Boolean Field" filterMatchMode="contains" sortable>
+                        <Column field="boolean_field" header="Status Field" filterMatchMode="contains" sortable>
                             <template #body="{ data }">
                                 <Tag v-if="data.boolean_field" severity="success">Active </Tag>
                                 <Tag v-else="data.boolean_field" severity="warning">Inactive</Tag>
@@ -97,7 +97,7 @@ const exportCSV = () => {
                         v-model:first="first"
                         :rows="rows"
                         :totalRecords="totalRecords"
-                        :rowsPerPageOptions="[10, 20, 50]"
+                        :rowsPerPageOptions="rowsPerPageItems"
                         :currentPageReportTemplate="`Showing ${first + 1} to ${Math.min(first + rows, totalRecords)} of ${totalRecords} entries`"
                         @page="onPageChange"
                     />
