@@ -4,14 +4,10 @@ import { FilterMatchMode, FilterOperator } from 'primevue/api';
 import Dropdown from 'primevue/dropdown';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import { useApiCrud } from '../../../vue-bvgels/composables/useApiCrud';
-import { useRestStore } from '../../../vue-bvgels/stores/restModule';
 // import { usePaginatedFetch } from '../../../vue-bvgels/composables/usePaginatedFetch';
 import { usePaginatedFetch } from '@/vue-bvgels/composables/usePaginatedFetch';
 
 import { useToast } from 'primevue/usetoast';
-
-const store = useRestStore();
 const { transformedData, first, rows, totalRecords, fetchItems, onPageChange } = usePaginatedFetch('demo');
 // const transformedData = ref([{ results: [] }]);
 const dt = ref();
