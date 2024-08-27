@@ -21,7 +21,7 @@ import moment from 'moment';
 const toast = useToast();
 const store = useRestStore();
 const { optionSampleForeignKeyItems } = await useOptionItems(['sample-foreign-key']);
-const { save, fetchItem, item, serverError } = useApiCrud('demo', store);
+const { save, fetchItem, item, serverError } = useApiCrud('demo');
 const props = defineProps({
     id: {
         type: [String, Number],
