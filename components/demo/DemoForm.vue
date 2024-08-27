@@ -20,7 +20,6 @@ import moment from 'moment';
 
 const toast = useToast();
 const store = useRestStore();
-const { items, optionSampleLoading, count } = useListPage('sample-foreign-key');
 const { optionSampleForeignKeyItems } = await useOptionItems(['sample-foreign-key']);
 const { save, fetchItem, item, serverError } = useApiCrud('demo', store);
 const props = defineProps({
@@ -70,9 +69,6 @@ watch(
 );
 
 onMounted(() => {
-    store.setModelName('demo');
-    optionSampleItems.value = items.value;
-
     if (!props.create) {
         nextTick(async () => {
             store.loading = false;
