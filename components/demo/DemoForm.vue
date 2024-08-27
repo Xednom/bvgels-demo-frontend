@@ -5,6 +5,7 @@ import { useRestStore } from '../../vue-bvgels/stores/restModule';
 import ProgressSpinner from 'primevue/progressspinner';
 import { useToast } from 'primevue/usetoast';
 import { useListPage } from '@/vue-bvgels/composables/useListPage';
+import { useOptionItems } from '@/vue-bvgels/composables/useOptionItems';
 
 import BInputText from '@/vue-bvgels/components/uikit/fields/BInputText.vue';
 import BTextArea from '@/vue-bvgels/components/uikit/fields/BTextArea.vue';
@@ -20,7 +21,7 @@ import moment from 'moment';
 const toast = useToast();
 const store = useRestStore();
 const { items, optionSampleLoading, count } = useListPage('sample-foreign-key');
-
+const { optionSampleForeignKeyItems } = await useOptionItems(['sample-foreign-key']);
 const { save, fetchItem, item, serverError } = useApiCrud('demo', store);
 const props = defineProps({
     id: {
@@ -140,7 +141,7 @@ const mode = computed(() => {
                                         <BSelect
                                             v-model="item.foreign_key_field"
                                             :model-value="item.foreign_key_field"
-                                            :options="optionSampleItems.value"
+                                            :options="optionSampleForeignKeyItems"
                                             optionLabel="name"
                                             :server-error="responseError"
                                             label="Foreign Key Field"
