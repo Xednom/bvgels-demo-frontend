@@ -2,7 +2,17 @@
 import { useLayout } from '@/layouts/composables/layout';
 import { ProductService } from '@/service/ProductService';
 import { onMounted, reactive, ref, watch } from 'vue';
+
+import Chart from '@/vue-bvgels/components/uikit/Chart.vue';
+
 const { isDarkTheme } = useLayout();
+
+defineNuxtComponent({
+    components: {
+        Chart
+    }
+});
+
 definePageMeta({
     middleware: 'auth'
 });
@@ -178,4 +188,5 @@ watch(
             </div>
         </div>
     </div>
+    <Chart />
 </template>
