@@ -1,4 +1,5 @@
 import pkg from './package.json';
+import path from 'path';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -21,6 +22,11 @@ export default defineNuxtConfig({
       script: {
         defineModel: true,
         propsDestructure: true
+      }
+    },
+    resolve: {
+      alias: {
+        'vue-bvgels': path.resolve(__dirname, './vue-bvgels')
       }
     }
 
