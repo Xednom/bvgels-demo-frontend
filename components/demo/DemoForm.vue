@@ -13,6 +13,7 @@ import VCalendar from '@/vue-bvgels/components/uikit/fields/VCalendar.vue';
 import BDateTime from '@/vue-bvgels/components/uikit/fields/BDateTime.vue';
 import BBoolean from '@/vue-bvgels/components/uikit/fields/BBoolean.vue';
 import BSelect from '@/vue-bvgels/components/uikit/fields/BSelect.vue';
+import EditableDataTable from '@/vue-bvgels/components/uikit/table/EditableDataTable.vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
@@ -42,7 +43,11 @@ const formatDate = (date) => {
 const formatDateTime = (date) => {
     return moment(date).format('YYYY-MM-DD HH:mm');
 };
-const optionSampleItems = ref([{ results: [] }]);
+
+const fields = ref([
+    { name: 'name', type: 'text', placeholder: 'Name', icon: 'pi pi-user' },
+    { name: 'description', type: 'text', placeholder: 'Description', prefix: '$', suffix: '.00' }
+]);
 
 watch(
     () => item.value.date_field,
@@ -151,6 +156,12 @@ const mode = computed(() => {
                             <div class="p-fluid formgrid grid">
                                 <div class="field col-12">
                                     <BTextArea v-model="item.text_field" :model-value="item.text_field" :server-error="responseError" label="Big Text Field" field="text_field" />
+                                </div>
+                            </div>
+
+                            <div class="p-fluid formgrid grid">
+                                <div class="field col-12">
+                                    <EditableDataTable v-model:items="item.many_to_many_field" :fields="fields" />
                                 </div>
                             </div>
                         </div>
