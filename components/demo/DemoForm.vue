@@ -45,8 +45,8 @@ const formatDateTime = (date) => {
 };
 
 const fields = ref([
-    { name: 'name', type: 'text', placeholder: 'Name', icon: 'pi pi-user' },
-    { name: 'description', type: 'text', placeholder: 'Description', prefix: '$', suffix: '.00' }
+    { id: 0, name: 'name', type: 'text', placeholder: 'Name' },
+    { id: 0, name: 'description', type: 'text', placeholder: 'Description' }
 ]);
 
 watch(
@@ -161,7 +161,7 @@ const mode = computed(() => {
 
                             <div class="p-fluid formgrid grid">
                                 <div class="field col-12">
-                                    <EditableDataTable v-model:items="item.many_to_many_field" :fields="fields" />
+                                    <EditableDataTable v-model:items="item.many_to_many_field" :fields="fields" :server-error="responseError.many_to_many_field" field="many_to_many_field" />
                                 </div>
                             </div>
                         </div>
