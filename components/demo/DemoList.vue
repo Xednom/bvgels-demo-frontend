@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted, reactive, watch } from 'vue';
+import { ref, Ref, onMounted, reactive, watch } from 'vue';
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
 import Dropdown from 'primevue/dropdown';
 import DataTable from 'primevue/datatable';
@@ -38,6 +38,15 @@ const exportCSV = () => {
 const onFilter = () => {
     fetchItems(first.value / rows.value + 1, rows.value, filters.value);
 };
+
+const multiSortMeta = ref([]);
+
+const onSort = (event: any) => {
+    multiSortMeta.value = event.multiSortMeta;
+
+    // Call fetchItems with the sortQuery
+    fetchItems(first.value / rows.value + 1, rows.value, filters.value, multiSortMeta.value);
+};
 </script>
 
 <template>
@@ -69,6 +78,7 @@ const onFilter = () => {
                         filterDisplay="row"
                         :globalFilterFields="['char_field', 'date_field', 'datetime_field']"
                         @filter="onFilter"
+                        @sort="onSort"
                         tableStyle="min-width: 75rem"
                         sortMode="multiple"
                     >
@@ -88,7 +98,7 @@ const onFilter = () => {
                         </Column>
                         <Column field="datetime_field" header="Date Time Field" filterMatchMode="contains" sortable>
                             <template #filter="{ filterModel, filterCallback }">
-                                <Calendar v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" showIcon iconDisplay="input" showTime hourFormat="24"/>
+                                <Calendar v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" showIcon iconDisplay="input" showTime hourFormat="24" />
                             </template>
                         </Column>
                         <Column field="boolean_field" header="Status Field" filterMatchMode="contains" sortable>
