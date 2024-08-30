@@ -8,15 +8,17 @@ import Column from 'primevue/column';
 import { usePaginatedFetch } from '@/vue-bvgels/composables/usePaginatedFetch';
 
 import { useToast } from 'primevue/usetoast';
-const { transformedData, first, rows, totalRecords, fetchItems, onPageChange } = usePaginatedFetch('demo');
 // const transformedData = ref([{ results: [] }]);
 const dt = ref();
 const filters = ref({
-    char_field: { value: '', matchMode: 'contains' },
-    date_field: { value: '', matchMode: 'contains' },
-    datetime_field: { value: '', matchMode: 'contains' },
-    status__name: { value: '', matchMode: 'contains' }
+    char_field: { value: '', matchMode: FilterMatchMode.CONTAINS },
+    date_field: { value: '', matchMode: FilterMatchMode.DATE_IS },
+    datetime_field: { value: '', matchMode: FilterMatchMode.DATE_IS },
+    status__name: { value: '', matchMode: FilterMatchMode.CONTAINS },
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
+
+const { transformedData, first, rows, totalRecords, fetchItems, onPageChange } = usePaginatedFetch('demo', filters);
 const lazyParams = ref({});
 const columns = ref([
     { field: 'char_field', header: 'Char Field' },
@@ -31,6 +33,10 @@ const rowsPerPageItems = [5, 10, 50, 100];
 
 const exportCSV = () => {
     dt.value.exportCSV();
+};
+// Handle filter event
+const onFilter = () => {
+    fetchItems(first.value / rows.value + 1, rows.value, filters.value);
 };
 </script>
 
@@ -55,14 +61,14 @@ const exportCSV = () => {
                         :value="transformedData"
                         lazy
                         :first="first"
-                        :rows="10"
-                        :rowsPerPageOptions="rowsPerPageItems"
+                        :rows="rows"
                         v-model:filters="filters"
                         ref="dt"
                         dataKey="id"
-                        :totalRecords="totalRecords.value"
+                        :totalRecords="totalRecords"
                         filterDisplay="row"
-                        :globalFilterFields="['char_field', 'date_field', 'date_time_field', 'boolean_field']"
+                        :globalFilterFields="['char_field', 'date_field', 'datetime_field']"
+                        @filter="onFilter"
                         tableStyle="min-width: 75rem"
                         sortMode="multiple"
                     >
@@ -77,12 +83,12 @@ const exportCSV = () => {
                         </Column>
                         <Column field="date_field" header="Date Field" filterMatchMode="contains" sortable>
                             <template #filter="{ filterModel, filterCallback }">
-                                <Calendar v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" showIcon iconDisplay="input" />
+                                <Calendar v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" showIcon iconDisplay="input" dateFormat="mm/dd/yy" />
                             </template>
                         </Column>
                         <Column field="datetime_field" header="Date Time Field" filterMatchMode="contains" sortable>
                             <template #filter="{ filterModel, filterCallback }">
-                                <Calendar v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" showIcon iconDisplay="input" />
+                                <Calendar v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" showIcon iconDisplay="input" showTime hourFormat="24"/>
                             </template>
                         </Column>
                         <Column field="boolean_field" header="Status Field" filterMatchMode="contains" sortable>
@@ -91,7 +97,6 @@ const exportCSV = () => {
                                 <Tag v-else="data.boolean_field" severity="warning">Inactive</Tag>
                             </template>
                         </Column>
-                        <!-- <Column v-for="(col, index) in columns" :key="index" :field="col.field" :header="col.header" :sortable="col.sortable || false"> </Column> -->
                     </DataTable>
                     <Paginator
                         v-model:first="first"
@@ -106,5 +111,4 @@ const exportCSV = () => {
         </div>
     </div>
 </template>
-
 <style></style>
