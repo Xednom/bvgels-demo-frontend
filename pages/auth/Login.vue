@@ -26,30 +26,31 @@ const data = {
     password: loginData.value.password
 };
 
-const onSubmit = async () => {
-    // Implement your login logic here
-    try {
-        await signIn({ username: data.username, password: data.password }, { callbackUrl: '/' });
-        loading.value = false;
-    } catch (err) {
-        loading.value = false;
-        authError.value = err.message.split(':')[3];
+const onSubmit = () => {
+    loading.value = true;
+    signIn({ username: data.username, password: data.password }, { callbackUrl: '/' })
+        .then(() => {
+            loading.value = false;
+        })
+        .catch((err) => {
+            loading.value = false;
+            authError.value = err.message.split(':')[3];
 
-        if (typeof authError.value === 'string' && authError.value.includes('401')) {
-            authError.value = 'Authentication Failed';
-        }
+            if (typeof authError.value === 'string' && authError.value.includes('401')) {
+                authError.value = 'Authentication Failed';
+            }
 
-        if (typeof authError.value === 'string' && authError.value.includes('no response')) {
-            authError.value = 'No response from server';
-        }
+            if (typeof authError.value === 'string' && authError.value.includes('no response')) {
+                authError.value = 'No response from server';
+            }
 
-        toast.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: `${authError.value}`,
-            life: 3000
+            toast.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: `${authError.value}`,
+                life: 3000
+            });
         });
-    }
 };
 </script>
 
