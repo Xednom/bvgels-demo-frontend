@@ -36,7 +36,7 @@ const onSubmit = () => {
             loading.value = false;
             authError.value = err.message.split(':')[3];
 
-            console.info("err: ", err.message.split(':')[3])
+            console.info("err: ", err.message)
 
             if (typeof authError.value === 'string' && authError.value.includes('401')) {
                 authError.value = 'Authentication Failed';
@@ -49,7 +49,7 @@ const onSubmit = () => {
             toast.add({
                 severity: 'error',
                 summary: 'Error',
-                detail: `${err.message.split(':')[3]}`,
+                detail: `${err.message}`,
                 life: 3000
             });
         });
