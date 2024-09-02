@@ -97,12 +97,37 @@ const toggle = (event) => {
             <i class="pi pi-bars"></i>
         </button>
 
-        <button class="p-link layout-topbar-menu-button layout-topbar-button" @click="onTopBarMenuButton()">
-            <i class="pi pi-ellipsis-v"></i>
+        <button class="p-link layout-topbar-menu-button layout-topbar-button" :class="topbarMenuClasses">
+            <Button type="button" icon="pi pi-user" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu"><i class="pi pi-user"></i></Button>
+            <Menu ref="menu" id="overlay_menu" :model="items" :popup="true">
+                <template #start>
+                    <span class="inline-flex align-items-center gap-1 px-2 py-2">
+                        <span class="text-xl font-semibold">Your Company<span class="text-primary"> Name</span></span>
+                    </span>
+                </template>
+                <template #item="{ item, props }">
+                    <a v-ripple @click="() => signOut({ callbackUrl: '/auth/login' })" class="flex align-items-center" v-bind="props.action">
+                        <span :class="item.icon" />
+                        <span class="ml-2">{{ item.label }}</span>
+                        <Badge v-if="item.badge" class="ml-auto" :value="item.badge" />
+                        <span v-if="item.shortcut" class="ml-auto border-1 surface-border border-round surface-100 text-xs p-1">{{ item.shortcut }}</span>
+                    </a>
+                </template>
+                <template #end>
+                    <button v-ripple class="relative overflow-hidden w-full p-link flex align-items-center p-2 pl-3 text-color hover:surface-200 border-noround">
+                        <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" class="mr-2" shape="circle" />
+                        <span class="inline-flex flex-column">
+                            <span class="font-bold">Welcome, {{ data.first_name }} {{ data.last_name }}</span>
+                            <span class="text-sm" v-if="data.is_superuser">Admin</span>
+                            <span class="text-sm" v-else>Staff</span>
+                        </span>
+                    </button>
+                </template>
+            </Menu>
         </button>
 
         <div class="layout-topbar-menu" :class="topbarMenuClasses">
-            <Button type="button" icon="pi pi-ellipsis-v" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu" />
+            <Button type="button" icon="pi pi-user" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu" />
             <Menu ref="menu" id="overlay_menu" :model="items" :popup="true">
                 <template #start>
                     <span class="inline-flex align-items-center gap-1 px-2 py-2">
