@@ -34,22 +34,22 @@ const onSubmit = () => {
         })
         .catch((err) => {
             loading.value = false;
-            authError.value = err.message.split(':')[3];
+            const errorMessage = err.message;
+            const errorCodeMatch = errorMessage.match(/: (\d{3})/);
+            const errorCode = errorCodeMatch ? errorCodeMatch[1] : null;
 
-            console.info("err: ", err.message)
-
-            if (typeof authError.value === 'string' && authError.value.includes('401')) {
+            if (errorCode === '401') {
                 authError.value = 'Authentication Failed';
-            }
-
-            if (typeof authError.value === 'string' && authError.value.includes('no response')) {
+            } else if (errorMessage.includes('no response')) {
                 authError.value = 'No response from server';
+            } else {
+                authError.value = errorMessage;
             }
 
             toast.add({
                 severity: 'error',
                 summary: 'Error',
-                detail: `${err.message}`,
+                detail: `${authError.value}`,
                 life: 3000
             });
         });
