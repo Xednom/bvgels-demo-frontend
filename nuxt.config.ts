@@ -76,7 +76,7 @@ export default defineNuxtConfig({
     }
   ],
 
-  css: ['primeicons/primeicons.css', 'primeflex/primeflex.scss', 'primevue/resources/themes/md-dark-indigo/theme.css', '@/assets/styles.scss'],
+  css: ['primeicons/primeicons.css', 'primeflex/primeflex.scss', 'primevue/resources/themes/aura-dark-indigo/theme.css', '@/assets/styles.scss'],
 
   auth: {
     baseURL: process.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/",
