@@ -18,7 +18,7 @@ const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
-const { transformedData, first, rows, totalRecords, fetchItems, onPageChange } = usePaginatedFetch('demo', filters);
+const { transformedData, first, rows, totalRecords, loading, fetchItems, onPageChange } = usePaginatedFetch('demo', filters);
 const lazyParams = ref({});
 const columns = ref([
     { field: 'char_field', header: 'Char Field' },
@@ -77,12 +77,14 @@ const onSort = (event: any) => {
                         :totalRecords="totalRecords"
                         filterDisplay="row"
                         :globalFilterFields="['char_field', 'date_field', 'datetime_field']"
+                        :loading="!loading"
                         @filter="onFilter"
                         @sort="onSort"
                         tableStyle="min-width: 75rem"
                         sortMode="multiple"
                     >
                         <Column headerStyle="width: 3rem"></Column>
+                        <template #loading> Loading demo data. Please wait. </template>
                         <Column field="char_field" header="Text Field" filterMatchMode="startsWith" sortable>
                             <template #filter="{ filterModel, filterCallback }">
                                 <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()" class="p-column-filter" placeholder="Search" />
