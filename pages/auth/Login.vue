@@ -38,7 +38,7 @@ const onSubmit = () => {
             const errorCodeMatch = errorMessage.match(/: (\d{3})/);
             const errorCode = errorCodeMatch ? errorCodeMatch[1] : null;
 
-            if (errorCode === '401') {
+            if (errorCode === '401' || errorCode === '400' || errorCode === '403' || errorCode === '405') {
                 authError.value = 'Authentication Failed';
             } else if (errorMessage.includes('no response')) {
                 authError.value = 'No response from server';
@@ -76,7 +76,8 @@ const onSubmit = () => {
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a>
                         </div>
-                        <Button type="submit" label="Sign In" class="w-full p-3 text-xl"></Button>
+                        <Button v-if="!loading.value" type="submit" label="Sign In" class="w-full p-3 text-xl"></Button>
+                        <Button v-if="loading.value" label="Signing In..." class="w-full p-3 text-xl" disabled />
                     </form>
                 </div>
             </div>
