@@ -4,6 +4,8 @@ import { useApiCrud } from '../../vue-bvgels/composables/useApiCrud';
 import { useRestStore } from '../../vue-bvgels/stores/restModule';
 import ProgressSpinner from 'primevue/progressspinner';
 import { useToast } from 'primevue/usetoast';
+import Skeleton from 'primevue/skeleton';
+
 import { useListPage } from '@/vue-bvgels/composables/useListPage';
 import { useOptionItems } from '@/vue-bvgels/composables/useOptionItems';
 
@@ -22,7 +24,7 @@ import moment from 'moment';
 const toast = useToast();
 const store = useRestStore();
 const { optionSampleForeignKeyItems } = await useOptionItems(['sample-foreign-key']);
-const { save, fetchItem, item, serverError } = useApiCrud('demo');
+const { save, fetchItem, item, loading, serverError } = useApiCrud('demo');
 const props = defineProps({
     id: {
         type: [String, Number],
@@ -35,7 +37,6 @@ const props = defineProps({
 });
 
 const model = defineModel();
-const loading = ref(false);
 const responseError = ref<object>({});
 const formatDate = (date) => {
     return moment(date).format('YYYY-MM-DD');
@@ -78,7 +79,6 @@ onMounted(() => {
         nextTick(async () => {
             store.loading = false;
             fetchItem(props.id);
-            loading.value = store.loading;
         });
     }
 });
@@ -103,31 +103,26 @@ const mode = computed(() => {
         <div className="col-12">
             <Card>
                 <template #title>{{ mode }} demo</template>
-                <template #content v-if="loading">
-                    <div class="spinner-container">
-                        <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" aria-label="Custom ProgressSpinner" />
-                    </div>
-                </template>
-                <template #content v-else>
+                <template #content>
                     <div class="col-12">
                         <div class="card">
                             <div class="p-fluid formgrid grid">
                                 <div class="field col-12 md:col-3">
-                                    <BInputText v-model="item.char_field" type="text" :model-value="item.char_field" :server-error="responseError" label="Text Field" field="char_field" />
+                                    <BInputText v-model="item.char_field" type="text" :model-value="item.char_field" :server-error="responseError" :loading="loading" label="Text Field" field="char_field" />
                                 </div>
                                 <div class="field col-12 md:col-3">
                                     <BBoolean v-model="item.boolean_field" :server-error="responseError" label="Status Field" field="boolean_field" />
                                 </div>
                                 <div class="field col-12 md:col-3">
-                                    <BInputText v-model="item.email_field" type="text" :model-value="item.email_field" :server-error="responseError" label="Email Field" field="email_field" />
+                                    <BInputText v-model="item.email_field" type="text" :model-value="item.email_field" :server-error="responseError" :loading="loading" label="Email Field" field="email_field" />
                                 </div>
                                 <div class="field col-12 md:col-3">
-                                    <BInputText v-model="item.integer_field" type="text" :model-value="item.integer_field" :server-error="responseError" label="Number Field" field="integer_field" />
+                                    <BInputText v-model="item.integer_field" type="text" :model-value="item.integer_field" :server-error="responseError" :loading="loading" label="Number Field" field="integer_field" />
                                 </div>
                             </div>
                             <div class="p-fluid formgrid grid">
                                 <div class="field col-12 md:col-3">
-                                    <BInputText v-model="item.decimal_field" type="text" :model-value="item.decimal_field" :server-error="responseError" label="Decimal Field" field="decimal_field" />
+                                    <BInputText v-model="item.decimal_field" type="text" :model-value="item.decimal_field" :server-error="responseError" :loading="loading" label="Decimal Field" field="decimal_field" />
                                 </div>
                                 <div class="field col-12 md:col-3">
                                     <BDateTime v-model="item.date_field" :server-error="responseError" label="Date Field" field="date_field"> </BDateTime>
@@ -155,7 +150,7 @@ const mode = computed(() => {
                             </div>
                             <div class="p-fluid formgrid grid">
                                 <div class="field col-12">
-                                    <BTextArea v-model="item.text_field" :model-value="item.text_field" :server-error="responseError" label="Big Text Field" field="text_field" />
+                                    <BTextArea v-model="item.text_field" :model-value="item.text_field" :server-error="responseError" :loading="loading" label="Big Text Field" field="text_field" />
                                 </div>
                             </div>
 
