@@ -76,8 +76,8 @@ const onSubmit = () => {
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a>
                         </div>
-                        <Button v-if="!loading.value" type="submit" label="Sign In" class="w-full p-3 text-xl"></Button>
-                        <Button v-if="loading.value" label="Signing In..." class="w-full p-3 text-xl" disabled />
+                        <Button v-if="!loading" type="submit" label="Sign In" class="w-full p-3 text-xl"></Button>
+                        <Button v-if="loading" label="Signing In..." class="w-full p-3 text-xl" disabled />
                     </form>
                 </div>
             </div>
