@@ -77,7 +77,7 @@ const onSort = (event: any) => {
                         :totalRecords="totalRecords"
                         filterDisplay="row"
                         :globalFilterFields="['char_field', 'date_field', 'datetime_field']"
-                        :loading="!loading"
+                        :loading="loading"
                         @filter="onFilter"
                         @sort="onSort"
                         tableStyle="min-width: 75rem"
