@@ -24,7 +24,7 @@ import moment from 'moment';
 const toast = useToast();
 const store = useRestStore();
 const { optionSampleForeignKeyItems } = await useOptionItems(['sample-foreign-key']);
-const { save, fetchItem, item, loading, serverError } = useApiCrud('demo');
+const { save, fetchItem, item, saving, loading, serverError } = useApiCrud('demo');
 const props = defineProps({
     id: {
         type: [String, Number],
@@ -165,7 +165,8 @@ const mode = computed(() => {
                     <Toolbar>
                         <template v-slot:start>
                             <Toast />
-                            <Button label="Save" icon="pi pi-check" class="p-button-success mr-2" @click="save(item)" />
+                            <Button v-if="!saving" label="Save" icon="pi pi-check" class="p-button-success mr-2" @click="save(item)" />
+                            <Button v-else-if="saving" label="Saving.." icon="pi pi-spin pi-spinner" class="p-button-success mr-2" disabled />
                             <NuxtLink :to="`/demo/`">
                                 <Button label="Close" icon="pi pi-times" class="p-button-danger" />
                             </NuxtLink>
