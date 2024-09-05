@@ -40,3 +40,9 @@ npm run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+
+## Info
+This project uses **vue-bvgels** submodule reusable tools and composables to improve Developer Experience(DX)
+
+**vue-bvgels** is made with Vue 3 composition API and uses Primevue 3 for UI
