@@ -9,7 +9,7 @@ const logoUrl = computed(() => {
 
 <template>
     <div class="layout-footer">
-        <span class="font-medium ml-2">1.0.0</span>
+        <span class="font-medium ml-2">1.26.0</span>
     </div>
 </template>
 <style lang="scss" scoped></style>

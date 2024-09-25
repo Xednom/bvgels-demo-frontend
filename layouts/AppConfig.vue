@@ -201,8 +201,8 @@ const onRippleChange = (value) => {
         <h5>PrimeOne Design - 2022</h5>
         <div class="grid">
             <div class="col-3">
-                <button class="p-link w-2rem h-2rem" @click="onChangeTheme('lara-light-indigo', 'light')">
-                    <img src="/layout/images/themes/lara-light-indigo.png" class="w-2rem h-2rem" alt="Lara Light Indigo" />
+                <button class="p-link w-2rem h-2rem" @click="onChangeTheme('lara-light-purple', 'light')">
+                    <img src="/layout/images/themes/lara-light-purple.png" class="w-2rem h-2rem" alt="Lara Light Indigo" />
                 </button>
             </div>
             <div class="col-3">

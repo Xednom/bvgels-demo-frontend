@@ -1,10 +1,10 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-import { useLayout } from './composables/layout';
+import { useLayout } from './composables/layout.js';
 import { useRouter } from 'vue-router';
 import Menu from 'primevue/menu';
 
-const { layoutConfig, onMenuToggle } = useLayout();
+const { changeThemeSettings, layoutConfig, onMenuToggle } = useLayout();
 const outsideClickListener = ref(null);
 const topbarMenuActive = ref(false);
 const router = useRouter();
@@ -84,6 +84,36 @@ const items = ref([
 const toggle = (event) => {
     menu.value.toggle(event);
 };
+const iconMode = ref('pi pi-sun');
+// const { changeThemeSettings, setScale, layoutConfig } = useLayout();
+
+const onChangeTheme = (theme, mode) => {
+    const elementId = 'theme-css';
+    const linkElement = document.getElementById(elementId);
+    const cloneLinkElement = linkElement.cloneNode(true);
+    console.info("theme value and theme: ", layoutConfig.theme.value, theme)
+    const newThemeUrl = linkElement.getAttribute('href').replace(layoutConfig.theme.value, theme);
+
+    console.info("newThemeUrl: ", newThemeUrl)
+    cloneLinkElement.setAttribute('id', elementId + '-clone');
+    cloneLinkElement.setAttribute('href', newThemeUrl);
+    cloneLinkElement.addEventListener('load', () => {
+        linkElement.remove();
+        cloneLinkElement.setAttribute('id', elementId);
+        changeThemeSettings(theme, mode === 'dark');
+    });
+    linkElement.parentNode.insertBefore(cloneLinkElement, linkElement.nextSibling);
+};
+
+const toggleIcon = () => {
+    iconMode.value = iconMode.value === 'pi pi-sun' ? 'pi pi-moon' : 'pi pi-sun';
+
+    if (iconMode.value === 'pi pi-sun') {
+        onChangeTheme('lara-light-purple', 'light');
+    } else {
+        onChangeTheme('lara-dark-purple', 'dark');
+    }
+};
 </script>
 
 <template>
@@ -102,6 +132,7 @@ const toggle = (event) => {
         </button>
 
         <div class="layout-topbar-menu" :class="topbarMenuClasses">
+            <Button type="button" :icon="iconMode" @click="toggleIcon" />
             <Button type="button" icon="pi pi-ellipsis-v" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu" />
             <Menu ref="menu" id="overlay_menu" :model="items" :popup="true">
                 <template #start>

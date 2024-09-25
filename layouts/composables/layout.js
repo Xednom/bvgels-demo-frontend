@@ -3,7 +3,7 @@ import { toRefs, reactive, computed } from 'vue';
 const layoutConfig = reactive({
     darkTheme: false,
     menuMode: 'static',
-    theme: 'lara-light-indigo',
+    theme: 'lara-light-purple',
     scale: 14,
     activeMenuItem: null
 });
@@ -19,6 +19,7 @@ const layoutState = reactive({
 
 export function useLayout() {
     const changeThemeSettings = (theme, darkTheme) => {
+        console.info('darkTheme and theme: ', darkTheme, theme);
         layoutConfig.darkTheme = darkTheme;
         layoutConfig.theme = theme;
     };
