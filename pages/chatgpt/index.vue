@@ -69,6 +69,7 @@ const sendMessage = async () => {
 
 .user {
     text-align: right;
+    color: black;
     margin: 10px;
     background: #d1f7c4;
     padding: 8px;
@@ -77,6 +78,7 @@ const sendMessage = async () => {
 
 .bot {
     text-align: left;
+    color: black;
     margin: 10px;
     background: #f1f1f1;
     padding: 8px;
