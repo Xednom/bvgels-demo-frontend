@@ -32,6 +32,15 @@ export default defineNuxtConfig({
 
   },
 
+  nitro: {
+    devProxy: {
+      '/api/': {
+        target: process.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/",  // Django backend URL
+        changeOrigin: true
+      }
+    }
+  },
+
   app: {
     head: {
       title: 'Bvgels Demo',
