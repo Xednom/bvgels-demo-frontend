@@ -50,29 +50,33 @@ const fields = ref([
     { id: 0, name: 'description', type: 'text', placeholder: 'Description' }
 ]);
 
-watch(
-    () => item.value.date_field,
-    (newVal) => {
-        item.value.date_field = formatDate(newVal);
-    },
-    { immediate: true }
-);
+// Watching date field
+function watchDateField(item) {
+    watch(
+        () => item.value.date_field,
+        (newVal) => {
+            item.value.date_field = formatDate(newVal);
+        }
+    );
+}
 
-watch(
-    () => item.value.datetime_field,
-    (newVal) => {
-        item.value.datetime_field = formatDateTime(newVal);
-    },
-    { immediate: true }
-);
+function watchDateTimeField(item) {
+    watch(
+        () => item.value.datetime_field,
+        (newVal) => {
+            item.value.datetime_field = formatDateTime(newVal);
+        }
+    );
+}
 
-watch(
-    serverError,
-    (newVal) => {
+// Watching server errors
+function watchServerError(serverError, responseError) {
+    watch(serverError, (newVal) => {
         responseError.value = newVal;
-    },
-    { immediate: true }
-);
+    });
+}
+
+watch(watchDateField(item), watchDateTimeField(item), watchServerError(serverError, responseError));
 
 onMounted(() => {
     if (!props.create) {
